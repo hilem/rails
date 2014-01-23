@@ -37,9 +37,11 @@ module ActiveRecord
 
         def hstore_to_string(object)
           if Hash === object
-            object.map { |k,v|
+            string = object.map { |k, v|
               "#{escape_hstore(k)}=>#{escape_hstore(v)}"
-            }.join ','
+            }.join(',')
+            string.replace(escape_hstore(string)) if array_member
+            string
           else
             object
           end
